@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./simple.css">
+  <title>Word Lookup</title>
+</head>
+
+<body>
+  <h1>Word Finder</h1>
+  <p>This is a simple lookup to find words that match patterns in the word list that I use for word games.</p>
+  <p>For example, to find all 4 letter words that start with <i>p</i> and has an <i>a</i> in third position, enter
+    <i>p.a.</i> </p>
+  </br>
+  <p>For the technically interested, this uses javascript regular expressions to perform the search. <a
+      href="https://www.w3schools.com/jsref/jsref_obj_regexp.asp">W3 Schools</a> has more information if you want.</p>
+
+  <label for="pattern">Pattern:</label>
+
+  <div class="alignElements">
+    <input type="text" id="pattern" name="pattern" required minlength="1" maxlength="15" size="16">
+    <button type="button" onclick="getInputValue();" style="width: fit-content;">Lookup</button>
+  </div>
+  <pre id="results"></pre>
+
+  <script>
+
+    var textFile = [];
+
+    function ShowData(displayText) {
+      let outputText = "";
+      if (displayText instanceof Array) {
+        if (displayText.length > 0) {    
+          let count = 0;      
+          displayText.forEach(line => {
+            outputText += line + '\n';
+            count++;
+          });
+          outputText = "Total Words: " + count + "\n" + outputText;
+        }
+        else { outputText = "Nothing Found"; }
+      }
+      else {
+        outputText = displayText;
+      }
+      document.getElementById("results").textContent = outputText;
+    }
+
+    function getInputValue() {
+      let pattern = document.getElementById("pattern").value;
+      pattern = "^" + pattern.toUpperCase() + "$";
+      let regPattern = new RegExp(pattern);
+      let outputArray = [];
+      textFile.forEach(word => {
+        if (regPattern.test(word)) { outputArray.push(word); }
+      });
+      ShowData(outputArray);
+    }
+
+    // Search when press enter
+    var pressEnter = document.getElementById("pattern");
+    pressEnter.addEventListener("keyup", function (event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        getInputValue();
+      }
+    });
+
+    // Should be replaced with fetch and check to validate it finished
+    var oReq = new XMLHttpRequest();
+    oReq.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        textFile = this.responseText.split('\n');
+        for (let index = 0; index < textFile.length; index++) {
+          textFile[index] = textFile[index].trim();
+        }
+      }
+      else if (this.readyState == 4 && this.status != 200) {
+        console.log(this.statusText);
+      }
+    };
+    oReq.open("GET", "https://smp3142.github.io/Words/wordsWithoutIng.txt", false);
+    oReq.send();
+
+  </script>
+</body>
+
+</html>

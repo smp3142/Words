@@ -5,7 +5,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./simple.css">
+  <link rel="stylesheet" href="./new.css">
+  <link rel="icon" href="data:,">
   <title>Word Lookup</title>
 </head>
 
@@ -58,7 +59,13 @@
     function getInputValue() {
       let pattern = document.getElementById("pattern").value;
       pattern = "^" + pattern.toUpperCase() + "$";
-      let regPattern = new RegExp(pattern);
+      let regPattern;
+      try {
+        regPattern = new RegExp(pattern); 
+      } catch (error) {
+        ShowData(error.message);
+        return;
+      }
       let outputArray = [];
       textFile.forEach(word => {
         if (regPattern.test(word)) { outputArray.push(word); }
@@ -76,7 +83,7 @@
       }
     });
 
-    // Should be replaced with fetch and check to validate it finished
+    // Todo: replace with fetch and check to validate it finished
     var oReq = new XMLHttpRequest();
     oReq.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
@@ -91,6 +98,8 @@
     };
     oReq.open("GET", "https://smp3142.github.io/Words/wordsWithoutIng.txt", false);
     oReq.send();
+
+    // Todo: add dark mode toggle
 
   </script>
 </body>

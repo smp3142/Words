@@ -62,10 +62,16 @@
 
     function getInputValue() {
       let pattern = document.getElementById("pattern").value;
-      pattern = "^" + pattern.toUpperCase() + "$";
+      let correctedPattern = "";
+      for (let index = 0; index < pattern.length; index++) {
+        let letter = pattern[index].toUpperCase();
+        if (letter == '\u2026') {letter = "...";}
+        correctedPattern += letter;
+      }
+      correctedPattern = "^" + correctedPattern + "$";
       let regPattern;
       try {
-        regPattern = new RegExp(pattern);
+        regPattern = new RegExp(correctedPattern);
       } catch (error) {
         ShowData(error.message);
         return;

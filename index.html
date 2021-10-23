@@ -7,36 +7,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./new.css">
   <link rel="icon" href="data:,">
+  <script type="text/javascript" src="./wordsfile.js"></script>
   <title>Word Lookup</title>
 </head>
 
 <body>
   <button class="DarkModeButton" onClick="toggleDarkMode()">Toggle Dark Mode</button>
-  <h1 class="TopHeader">Word Finder</h1>
-  <p>This is a simple lookup to find words that match patterns in the word list that I use for word games.</p>
-  <p>An easy way to search is to enter a letter in position where you expect it, and a period for a position that can
-    have any letter. For example, to find all 4 letter words that start with <i>p</i> and has an <i>a</i> in third
-    position, enter
-    <i>p.a.</i>
-  </p>
-  <br />
-  <p>For the technically interested, this uses javascript regular expressions to perform the search. <a
-      href="https://www.w3schools.com/jsref/jsref_obj_regexp.asp">W3 Schools</a> has more information if you want.</p>
+  <main>
+    <h1 class="TopHeader">Word Finder</h1>
+    <section>
+      <p>This is a simple lookup to find words that match patterns in the word list that I use for word games.</p>
+      <p>An easy way to search is to enter a letter in position where you expect it, and a period for a position that
+        can
+        have any letter. For example, to find all 4 letter words that start with <i>p</i> and has an <i>a</i> in third
+        position, enter <b><i>p.a.</i></b>
+      </p>
+    </section>
+    <section>
+      <p>For the technically interested, this uses javascript regular expressions to perform the search. <a
+          href="https://www.w3schools.com/jsref/jsref_obj_regexp.asp">W3 Schools</a> has more information if you want.
+      </p>
 
-  <p>If you have questions, comments, concerns, etc. please create an <a
-      href="https://github.com/smp3142/Words/issues">issue</a>.</p>
+      <p>If you have questions, comments, concerns, etc. please create an <a
+          href="https://github.com/smp3142/Words/issues">issue</a>.</p>
+    </section>
+  </main>
+
   <label for="pattern" style="font-size: larger;">Pattern:</label>
-
   <input type="text" id="pattern" name="pattern" required minlength="1" maxlength="15" size="16"
     style="font-size: larger;">
   <button type="button" onclick="getInputValue();" style="width: fit-content; font-size: larger;">Lookup</button>
-
+  
   <pre id="results"></pre>
 
   <script>
-
-    var textFile = [];
-
     function ShowData(displayText) {
       let outputText = "";
       if (displayText instanceof Array) {
@@ -98,23 +102,6 @@
         }
       }
     }
-
-    // Todo: replace with fetch and check to validate it finished
-    var oReq = new XMLHttpRequest();
-    oReq.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        textFile = this.responseText.split('\n');
-        for (let index = 0; index < textFile.length; index++) {
-          textFile[index] = textFile[index].trim();
-        }
-      }
-      else if (this.readyState == 4 && this.status != 200) {
-        console.log(this.statusText);
-      }
-    };
-    oReq.open("GET", "https://smp3142.github.io/Words/wordsWithoutIng.txt", false);
-    oReq.send();
-
   </script>
 </body>
 
